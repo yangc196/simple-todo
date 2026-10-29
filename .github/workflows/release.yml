@@ -42,8 +42,8 @@ jobs:
           if ($env:RELEASE_TAG -notmatch '^v\d+\.\d+\.\d+$') {
             throw "Invalid release tag: $env:RELEASE_TAG"
           }
-          $package = Get-Content package.json -Raw | ConvertFrom-Json
-          $lock = Get-Content package-lock.json -Raw | ConvertFrom-Json
+          $package = Get-Content package.json -Raw | ConvertFrom-Json -AsHashtable
+          $lock = Get-Content package-lock.json -Raw | ConvertFrom-Json -AsHashtable
           if ($package.version -ne $lock.version) {
             throw "package.json ($($package.version)) and package-lock.json ($($lock.version)) versions differ"
           }
@@ -61,7 +61,7 @@ jobs:
         id: installer
         shell: pwsh
         run: |
-          $package = Get-Content package.json -Raw | ConvertFrom-Json
+          $package = Get-Content package.json -Raw | ConvertFrom-Json -AsHashtable
           $path = "dist/简单待办-$($package.version).exe"
           if (-not (Test-Path $path)) {
             Get-ChildItem dist -Force | Format-Table | Out-String | Write-Error
