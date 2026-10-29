@@ -1,0 +1,56 @@
+{
+  "name": "simple-todo",
+  "productName": "简单待办",
+  "version": "1.0.1",
+  "description": "极简桌面待办便签",
+  "main": "src/main.js",
+  "author": "ychen",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "icons": "python tools/make-icons.py",
+    "preview": "python -m http.server 8777",
+    "dist": "electron-builder --win nsis"
+  },
+  "build": {
+    "appId": "com.ychen.simpletodo",
+    "productName": "简单待办",
+    "artifactName": "简单待办-${version}.${ext}",
+    "files": [
+      "src/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "executableName": "SimpleTodo"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "简单待办",
+      "deleteAppDataOnUninstall": false,
+      "uninstallDisplayName": "简单待办"
+    }
+  },
+  "devDependencies": {
+    "electron": "^45.1.0",
+    "electron-builder": "^26.18.0"
+  }
+}

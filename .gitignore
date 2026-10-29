@@ -1,0 +1,13 @@
+# 依赖
+node_modules/
+
+# 打包产物
+dist/
+release/
+out/
+
+# 本地杂项
+*.log
+Thumbs.db
+desktop.ini
+.DS_Store
