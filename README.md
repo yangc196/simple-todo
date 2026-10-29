@@ -2,6 +2,8 @@
 
 一个只想把事记下来的桌面便签。黄底、圆角、无边框，勾掉就收进历史；没有账号、没有云同步、全程不联网。
 
+![主界面](docs/screenshot.png)
+
 ## 用法
 
 | 操作 | 说明 |
@@ -39,6 +41,7 @@ todolist/
 ├─ build/              打包用图标（electron-builder 读取，不参与运行）
 ├─ tools/
 │  └─ make-icons.py    纯 Python 画图标，无第三方依赖
+├─ docs/               界面截图（README 用）
 ├─ dist/               安装包产物（已被 .gitignore 忽略）
 ├─ package.json        依赖、脚本、electron-builder 配置
 └─ README.md

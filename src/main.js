@@ -14,7 +14,8 @@ const {
 const fs = require('fs');
 const path = require('path');
 
-const APP_DATA_DIR = path.join(app.getPath('appData'), 'SimpleTodo');
+const APP_DATA_DIR =
+  process.env.SIMPLE_TODO_DATA_DIR || path.join(app.getPath('appData'), 'SimpleTodo');
 const DATA_FILE = path.join(APP_DATA_DIR, 'data.json');
 const ASSETS = path.join(__dirname, '..', 'assets');
 
