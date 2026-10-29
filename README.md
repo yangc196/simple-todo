@@ -4,6 +4,8 @@
 
 ![主界面](docs/screenshot.png)
 
+[下载 Windows 安装包（v1.0.1）](https://github.com/yangc196/simple-todo/releases/latest)
+
 ## 用法
 
 | 操作 | 说明 |
