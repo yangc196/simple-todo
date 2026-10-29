@@ -55,7 +55,7 @@ jobs:
         run: npm ci
 
       - name: Build Windows x64 installer
-        run: npm run dist
+        run: npm run dist -- --publish never
 
       - name: Locate installer
         id: installer
