@@ -62,12 +62,17 @@ jobs:
         shell: pwsh
         run: |
           $package = Get-Content package.json -Raw | ConvertFrom-Json -AsHashtable
-          $path = "dist/简单待办-$($package.version).exe"
-          if (-not (Test-Path $path)) {
+          $source = "dist/简单待办-$($package.version).exe"
+          $name = "SimpleTodo-Setup-$($package.version).exe"
+          $path = "dist/$name"
+          if (-not (Test-Path $source)) {
             Get-ChildItem dist -Force | Format-Table | Out-String | Write-Error
-            throw "Expected installer not found: $path"
+            throw "Expected installer not found: $source"
           }
+          Move-Item -Path $source -Destination $path -Force
           "path=$path" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "name=$name" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+          "label=简单待办-$($package.version).exe" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
 
       - name: Upload installer to GitHub Release
         uses: softprops/action-gh-release@v3.0.3
@@ -76,3 +81,31 @@ jobs:
           files: ${{ steps.installer.outputs.path }}
           overwrite_files: true
           fail_on_unmatched_files: true
+
+      - name: Set Chinese display label
+        uses: actions/github-script@v9
+        env:
+          RELEASE_TAG: ${{ env.RELEASE_TAG }}
+          ASSET_NAME: ${{ steps.installer.outputs.name }}
+          ASSET_LABEL: ${{ steps.installer.outputs.label }}
+        with:
+          script: |
+            const { owner, repo } = context.repo
+            const release = await github.rest.repos.getReleaseByTag({
+              owner,
+              repo,
+              tag: process.env.RELEASE_TAG,
+            })
+            const asset = release.data.assets.find(
+              item => item.name === process.env.ASSET_NAME
+            )
+            if (!asset) {
+              throw new Error(`Release asset not found: ${process.env.ASSET_NAME}`)
+            }
+            await github.rest.repos.updateReleaseAsset({
+              owner,
+              repo,
+              asset_id: asset.id,
+              name: process.env.ASSET_NAME,
+              label: process.env.ASSET_LABEL,
+            })
